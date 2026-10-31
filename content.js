@@ -3,6 +3,14 @@ const DEFAULTS = {
   party: "BJP 🪷", sound: true,
 };
 
+const modiQuotes = [
+  "Fir Ek Baar, Modi Baar! 🪷",
+  "Mitron! Your vote has been successfully registered.",
+  "Digital India Masterstroke: Vote submitted successfully!",
+  "Waah Modiji Waah!",
+  "Aapka ek click, desh ke vikas ke liye!"
+];
+
 const RANDOM_PARTIES = [
   "BJP 🪷", "Congress ✋", "AAP 🧹", "Samajwadi Party 🚲",
   "BSP 🐘", "NOTA 🙃", "Chai Party ☕", "Maggi Party 🍜",
@@ -103,11 +111,18 @@ function showPrankToast() {
   lastShown = now;
 
   const party = escapeHtml(pickParty());
+  
+  // 1. Lotus aur Sparkles wala Confetti mix
+  const emojis = ["🎉", "🪷", "✨", "🇮🇳"];
   const confetti = Array.from({ length: 16 }, () => {
     const left = Math.random() * 100;
     const delay = Math.random() * 0.6;
-    return `<span class="c" style="left:${left}%;animation-delay:${delay}s">🎉</span>`;
+    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+    return `<span class="c" style="left:${left}%;animation-delay:${delay}s">${randomEmoji}</span>`;
   }).join("");
+
+  // 2. Random Modi Quote uthao
+  const randomQuote = modiQuotes[Math.floor(Math.random() * modiQuotes.length)];
 
   const host = document.createElement("div");
   host.id = "prank-vote-host";
@@ -127,11 +142,13 @@ function showPrankToast() {
         .card { background: #1f2430; color: #eee; }
         small { color: #aaa !important; }
       }
-      .tick { font-size: 36px; color: #1faa59; }
+      .tick { font-size: 32px; color: #1faa59; margin: 2px 0; }
       h3 { margin: 4px 0; font-size: 18px; }
-      .ok { color: #1faa59; font-weight: 600; }
-      .party { margin: 8px 0; font-size: 15px; }
-      small { color: #777; display: block; margin-top: 8px; }
+      .ok { color: #1faa59; font-weight: 600; font-size: 14px; }
+      .quote { font-weight: 600; margin: 8px 0; font-size: 13px; color: #e65100; }
+      @media (prefers-color-scheme: dark) { .quote { color: #ffb74d; } }
+      .party { margin: 6px 0; font-size: 14px; }
+      small { color: #777; display: block; margin-top: 8px; font-size: 11px; }
       #x { position: absolute; top: 6px; right: 10px; border: 0;
            background: none; font-size: 18px; cursor: pointer; color: inherit; }
       .bar { position: absolute; left: 0; bottom: 0; height: 4px; width: 100%;
@@ -147,10 +164,10 @@ function showPrankToast() {
       ${confetti}
       <button id="x">×</button>
       <h3>Vote Submitted!</h3>
-      <div class="ok">Success</div>
+      <div class="ok">Success 🪷</div>
       <div class="tick">✓</div>
-      <div>Thank you!</div>
-      <div class="party">Your vote goes to ${party}</div>
+      <div class="quote">"${randomQuote}"</div>
+      <div class="party">Your vote goes to <b>${party}</b></div>
       <small>Just a prank notification. No actual vote was cast.</small>
       <div class="bar"></div>
     </div>`;
